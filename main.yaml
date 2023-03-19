@@ -1,5 +1,5 @@
 Resources:
-  # 创建VPC
+  # Create VPC
   MyTestVpc:
     Type: "AWS::EC2::VPC"
     Properties:
@@ -7,17 +7,17 @@ Resources:
       EnableDnsSupport: true
       EnableDnsHostnames: true
 
-  # 创建IGW
+  # Create IGW
   MyTestIgw:
     Type: "AWS::EC2::InternetGateway"
-  # 关联到VPC
+  # Connect to VPC
   MyTestAttachIgw:
     Type: "AWS::EC2::VPCGatewayAttachment"
     Properties:
       VpcId: !Ref MyTestVpc
       InternetGatewayId: !Ref MyTestIgw
 
-  # 在VPC里面创建子网
+  # Create Subnet in VPC
   MyTestVpcSubnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -25,12 +25,11 @@ Resources:
       CidrBlock: 10.0.0.0/24
       AvailabilityZone: us-east-2a
 
-  # 在VPC内创建路由表并关联到子网，路由表设置默认路由指向IGW
+  # Create route table in VPC and connect it with Subnet. Route table be setted as default routting to IGW
   MyTestPublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref MyTestVpc
-  # 路由表的关联关系
   MyTestRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -43,7 +42,7 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref MyTestIgw
 
-  # 在VPC内创建一个安全组
+  # Create Security Group in VPC
   MyTestVpcSg:
     Type: AWS::EC2::SecurityGroup
     DependsOn: MyTestVpc
@@ -64,7 +63,7 @@ Resources:
           ToPort: 65535
           CidrIp: 0.0.0.0/0
 
-  # 创建一个EC2实例
+  # Create EC2 instance
   MyTestEc2Instance:
     Type: AWS::EC2::Instance
     Properties:
